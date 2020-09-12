@@ -1,0 +1,73 @@
+---
+title: "Lead IQ Data Reprot"
+author: "Jess Wild"
+date: "September 12, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Package Instalation and Data Import
+```{r packages, echo=FALSE}
+#instlling needed packages
+require(ggplot2)
+require(kableExtra)
+require(table1)
+```
+
+```{r data}
+#import the raw data 
+dat <- read.csv("C:/Users/jessi/Desktop/CU Denver Biostat PhD/6621/HW/HW 2/lead-iq-01.csv")
+
+```
+
+## Data Description
+
+This data set includes information on the IQ of 124 people and a categorical variable describing how close they lived to a lead smelter.  THe purpose of this dataset is to investigat the relationship between lead exposure and measured IQ level.
+
+### Variable 1: Smelter
+
+If a subject lives within one mile of a lead smelter, they are classified as 'Near', otherwise they are classified as 'Far'.  There were `r nrow(subset(dat,dat$Smelter=='Near'))` observations classified as 'Near' and `r nrow(subset(dat,dat$Smelter=='Far'))` observations classified as 'Far'.
+
+### Variable 2: IQ
+
+Using the Wechsler Intelligence Scale for Children, each subject's IQ score was recorded.  The mean IQ score overall was `r mean(dat$IQ)`. Thea mean IQ score for those calssified as near to a smelter was `r mean(subset(dat,dat$Smelter=='Near')$IQ)`, and the mean for those classified as far from a smelter was `r mean(subset(dat,dat$Smelter=='Far')$IQ)`.
+
+### Data Tables
+#### Data
+
+The full data set is:
+
+```{r data table}
+knitr::kable(dat, caption = "TABLE 1")
+
+```
+ 
+#### Descriptive Statistics
+
+Some descriptive statistics for this data are:
+
+```{r descriptive table}
+table1(~IQ+Smelter|Smelter, data = dat)
+
+```
+
+## Data Visualization
+
+To visualize the data, we can generate a boxplot stratified by proximity to a smelter:
+
+
+```{r boxplot, echo=FALSE}
+ggplot(dat, aes(x=Smelter, y=IQ, fill=Smelter)) +
+  geom_boxplot()
+```
+
+
+We can also generate a histogram of the data:
+
+```{r histogram, echo=FALSE}
+ggplot(dat, aes(x=IQ, fill=Smelter, color=Smelter)) +
+  geom_histogram(position="identity", alpha=0.5)
+```
