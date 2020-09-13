@@ -17,15 +17,25 @@ require(kableExtra)
 require(table1)
 ```
 
-```{r data}
+```{r data import}
 #import the raw data 
 dat <- read.csv("C:/Users/jessi/Desktop/CU Denver Biostat PhD/6621/HW/HW 2/lead-iq-01.csv")
 
 ```
 
+## Data Cleaning
+
+An outlying datapoint (IQ = 999) was confirmed to be entered in error and should be IQ=99.  The dataset was altered accordingly:
+
+```{r data cleaning}
+#import the raw data 
+dat$IQ[which(dat$IQ==999)] <- 99
+
+```
+
 ## Data Description
 
-This data set includes information on the IQ of 124 people and a categorical variable describing how close they lived to a lead smelter.  THe purpose of this dataset is to investigat the relationship between lead exposure and measured IQ level.
+This data set includes information on the IQ of `r nrow(dat)` people and a categorical variable describing how close they lived to a lead smelter.  THe purpose of this dataset is to investigat the relationship between lead exposure and measured IQ level.
 
 ### Variable 1: Smelter
 
@@ -33,7 +43,7 @@ If a subject lives within one mile of a lead smelter, they are classified as 'Ne
 
 ### Variable 2: IQ
 
-Using the Wechsler Intelligence Scale for Children, each subject's IQ score was recorded.  The mean IQ score overall was `r mean(dat$IQ)`. Thea mean IQ score for those calssified as near to a smelter was `r mean(subset(dat,dat$Smelter=='Near')$IQ)`, and the mean for those classified as far from a smelter was `r mean(subset(dat,dat$Smelter=='Far')$IQ)`.
+Using the Wechsler Intelligence Scale for Children, each subject's IQ score was recorded.  The mean IQ score overall was `r mean(dat$IQ)`. The mean IQ score for those calssified as near to a smelter was `r mean(subset(dat,dat$Smelter=='Near')$IQ)`, and the mean for those classified as far from a smelter was `r mean(subset(dat,dat$Smelter=='Far')$IQ)`.
 
 ### Data Tables
 #### Data
